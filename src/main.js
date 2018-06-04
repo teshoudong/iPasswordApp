@@ -1,9 +1,7 @@
 import React from 'react';
-import { View, Text, Image, StatusBar, StyleSheet } from 'react-native';
-// import TabNavigator from 'react-native-tab-navigator';
+import { View, Text, Image, StyleSheet } from 'react-native';
 import List from './list';
 import Setting from './setting';
-
 import Navigation from 'react-navigation';
 
 export default Navigation.createBottomTabNavigator({

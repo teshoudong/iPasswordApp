@@ -1,11 +1,14 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { View, StatusBar, StyleSheet } from 'react-native';
 import Navigation from 'react-navigation';
 import Detail from './src/detail';
 import Main from './src/main';
 import Login from './src/login';
 
 const styles = StyleSheet.create({
+    app: {
+        flex: 1
+    },
     header: {
         backgroundColor: '#333333'
     },
@@ -49,7 +52,7 @@ export default class App extends React.Component {
         });
     }
 
-    render() {
+    renderContent() {
         const { login } = this.state;
 
         if (login) {
@@ -57,6 +60,15 @@ export default class App extends React.Component {
         } else {
             return <Login onLogin={() => this.handleLogin()}/>;
         }
+    }
+
+    render() {
+        return (
+            <View style={styles.app}>
+                <StatusBar barStyle="light-content"/>
+                {this.renderContent()}
+            </View>
+        );
     }
 }
 
