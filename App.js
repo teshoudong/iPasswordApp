@@ -4,6 +4,7 @@ import Navigation from 'react-navigation';
 import Detail from './src/detail';
 import Main from './src/main';
 import Login from './src/login';
+import Qrcode from './src/qrcode';
 
 const styles = StyleSheet.create({
     app: {
@@ -20,16 +21,28 @@ const styles = StyleSheet.create({
 const Nav = Navigation.createStackNavigator({
     Main: {
         screen: Main,
-        navigationOptions: {
-            headerTitle: 'iPassword',
-            headerStyle: styles.header,
-            headerTitleStyle: styles.headerTitle
+        navigationOptions: ({ navigation }) => {
+            return {
+                headerTitle: 'iPassword',
+                headerStyle: styles.header,
+                headerTitleStyle: styles.headerTitle,
+                headerRight: <Qrcode.Button navigation={navigation}/>
+            };
         }
     },
     Detail: {
         screen: Detail,
         navigationOptions: {
             headerTitle: '详情',
+            headerTintColor: '#FFFFFF',
+            headerStyle: styles.header,
+            headerTitleStyle: styles.headerTitle
+        }
+    },
+    Qrcode: {
+        screen: Qrcode,
+        navigationOptions: {
+            headerTitle: '扫码',
             headerTintColor: '#FFFFFF',
             headerStyle: styles.header,
             headerTitleStyle: styles.headerTitle
