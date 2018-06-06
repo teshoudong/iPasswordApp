@@ -4,7 +4,7 @@ import Camera from 'react-native-camera';
 
 class Qrcode extends React.Component {
     handleBarcode(e) {
-        console.log(e.type, e.data);
+        alert(e.data);
     }
 
     render() {
@@ -12,7 +12,7 @@ class Qrcode extends React.Component {
             <View style={styles.qrcode}>
                 <Camera
                     ref={camera => this.camera = camera}
-                    onBarCodeRead={() => this.handleBarcode()}
+                    onBarCodeRead={e => this.handleBarcode(e)}
                     style={styles.qrcodeCamera}
                     aspect={Camera.constants.Aspect.fill}>
                 </Camera>
