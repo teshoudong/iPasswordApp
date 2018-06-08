@@ -15,6 +15,7 @@ class Qrcode extends React.Component {
                     onBarCodeRead={e => this.handleBarcode(e)}
                     style={styles.qrcodeCamera}
                     aspect={Camera.constants.Aspect.fill}>
+                    <View style={styles.qrcodeRect}></View>
                 </Camera>
             </View>
         );
@@ -47,7 +48,17 @@ const styles = StyleSheet.create({
         flex: 1
     },
     qrcodeCamera: {
-        flex: 1
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    qrcodeRect: {
+        width: 200,
+        height: 200,
+        borderWidth: 1,
+        borderColor: '#00FF00',
+        backgroundColor: 'transparent',
+        borderStyle: 'solid'
     }
 });
 
