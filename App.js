@@ -5,6 +5,7 @@ import Detail from './src/detail';
 import Main from './src/main';
 import Login from './src/login';
 import Qrcode from './src/qrcode';
+import PubSub from 'pubsub-js';
 
 const styles = StyleSheet.create({
     app: {
@@ -57,6 +58,16 @@ export default class App extends React.Component {
         this.state = {
             login: false
         };
+
+        this.subLogout();
+    }
+
+    subLogout() {
+        PubSub.subscribe('logout', () => {
+            this.setState({
+                login: false
+            });
+        });
     }
 
     handleLogin() {

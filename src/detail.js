@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, SectionList, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, Image, ScrollView, StyleSheet } from 'react-native';
 
 export default class Detail extends React.Component {
     render() {

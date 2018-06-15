@@ -1,10 +1,51 @@
 import React from 'react';
-import { Dimensions, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, Image } from 'react-native';
 import Camera from 'react-native-camera';
+import storage from './storage';
+import PubSub from 'pubsub-js';
 
 class Qrcode extends React.Component {
+    constructor(props) {
+        super(props);
+
+        fetch('http://10.242.115.35:8000/config.json')
+            .then(response => response.json())
+            .then(data => {
+                storage.save({
+                    key: 'passwordList',
+                    expires: null,
+                    data
+                });
+                PubSub.publish('updatePasswordList', data);
+                this.props.navigation.navigate('List');
+            }).catch(() => {
+                alert('出问题啦，请重新扫码！');
+                this.url = '';
+            });
+    }
+
+    componentWillUnmount() {
+        this.url = '';
+    }
+
     handleBarcode(e) {
-        alert(e.data);
+        if (!this.url) {
+            this.url = e.data;
+            fetch(this.url)
+                .then(response => response.json())
+                .then(data => {
+                    storage.save({
+                        key: 'passwordList',
+                        expires: null,
+                        data
+                    });
+                    PubSub.publish('updatePasswordList', data);
+                    this.props.navigation.navigate('List');
+                }).catch(() => {
+                    alert('出问题啦，请重新扫码！');
+                    this.url = '';
+                });
+        }
     }
 
     render() {

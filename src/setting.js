@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, Text, Image, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
+import PubSub from 'pubsub-js';
 
 export default class Setting extends React.Component {
     handleLogout() {
-        
+        PubSub.publish('logout');
     }
 
     render() {

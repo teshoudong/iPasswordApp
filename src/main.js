@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { Image, StyleSheet } from 'react-native';
 import List from './list';
 import Setting from './setting';
 import Navigation from 'react-navigation';
