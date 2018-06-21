@@ -1,5 +1,7 @@
 import React from 'react';
+import storage from './storage';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import sha256 from 'crypto-js/sha256';
 
 export default class Login extends React.Component {
     constructor(props) {
@@ -8,6 +10,22 @@ export default class Login extends React.Component {
         this.state = {
             input: ''
         };
+
+        this.getKeypassword();
+    }
+
+    getKeypassword() {
+        storage.load({
+            key: 'keypassword'
+        }).then(data => {
+            this.keypassword = data;
+        }).catch(err => {
+            if (err.name === 'NotFoundError') {
+                this.keypassword = '';
+            } else {
+                alert('获取keypassword失败');
+            }
+        });
     }
 
     handleInput(text) {
@@ -17,7 +35,18 @@ export default class Login extends React.Component {
     }
 
     handleButton() {
-        this.props.onLogin();
+        const { input } = this.state;
+
+        if (!input) {
+            alert('请输入密码');
+        } else {
+            if ((this.keypassword === '') || (this.keypassword && this.keypassword === sha256(input).toString())) {
+                global.keypassword = input;
+                this.props.onLogin();
+            } else {
+                alert('密码不正确');
+            }
+        }
     }
 
     render() {

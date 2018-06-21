@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StatusBar, StyleSheet } from 'react-native';
+import { View, StatusBar, StyleSheet, AppState } from 'react-native';
 import Navigation from 'react-navigation';
 import Detail from './src/detail';
 import Main from './src/main';
@@ -60,6 +60,19 @@ export default class App extends React.Component {
         };
 
         this.subLogout();
+    }
+
+    componentDidMount() {
+        AppState.addEventListener('change', this.handleAppStateChange);
+    }
+    componentWillUnmount() {
+        AppState.removeEventListener('change', this.handleAppStateChange);
+    }
+
+    handleAppStateChange(e) {
+        if (e !== 'active') {
+            PubSub.publish('logout');
+        }
     }
 
     subLogout() {

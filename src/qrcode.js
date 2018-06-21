@@ -3,27 +3,9 @@ import { StyleSheet, TouchableOpacity, View, Image } from 'react-native';
 import Camera from 'react-native-camera';
 import storage from './storage';
 import PubSub from 'pubsub-js';
+import sha256 from 'crypto-js/sha256';
 
 class Qrcode extends React.Component {
-    constructor(props) {
-        super(props);
-
-        fetch('http://10.242.115.35:8000/config.json')
-            .then(response => response.json())
-            .then(data => {
-                storage.save({
-                    key: 'passwordList',
-                    expires: null,
-                    data
-                });
-                PubSub.publish('updatePasswordList', data);
-                this.props.navigation.navigate('List');
-            }).catch(() => {
-                alert('出问题啦，请重新扫码！');
-                this.url = '';
-            });
-    }
-
     componentWillUnmount() {
         this.url = '';
     }
@@ -34,13 +16,25 @@ class Qrcode extends React.Component {
             fetch(this.url)
                 .then(response => response.json())
                 .then(data => {
-                    storage.save({
-                        key: 'passwordList',
-                        expires: null,
-                        data
-                    });
-                    PubSub.publish('updatePasswordList', data);
-                    this.props.navigation.navigate('List');
+                    const passwordList = data.passwordList;
+                    const keypassword = data.keypassword;
+
+                    if (keypassword === sha256(global.keypassword).toString()) {
+                        storage.save({
+                            key: 'keypassword',
+                            expires: null,
+                            data: keypassword
+                        });
+                        storage.save({
+                            key: 'passwordList',
+                            expires: null,
+                            data: passwordList
+                        });
+                        PubSub.publish('updatePasswordList', passwordList);
+                        this.props.navigation.navigate('List');
+                    } else {
+                        alert('密码不一致');
+                    }
                 }).catch(() => {
                     alert('出问题啦，请重新扫码！');
                     this.url = '';

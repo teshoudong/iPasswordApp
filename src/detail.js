@@ -1,9 +1,12 @@
 import React from 'react';
 import { View, Text, Image, ScrollView, StyleSheet } from 'react-native';
+import CryptoJS from 'crypto-js';
 
 export default class Detail extends React.Component {
     render() {
         const item = this.props.navigation.getParam('item', {});
+        const passwordDecrypted = CryptoJS.AES.decrypt(item.encryptPassword, global.keypassword);
+        const password = passwordDecrypted.toString(CryptoJS.enc.Utf8);
 
         return (
             <ScrollView>
@@ -20,7 +23,7 @@ export default class Detail extends React.Component {
                     </View>
                     <View style={styles.infoItem}>
                         <Text style={styles.infoName}>密码</Text>
-                        <Text style={styles.infoVal}>{item.encryptPassword}</Text>
+                        <Text style={styles.infoVal}>{password}</Text>
                     </View>
                 </View>
                 <View style={styles.info}>
