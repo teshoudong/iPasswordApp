@@ -83,17 +83,34 @@ export default class List extends React.Component {
     render() {
         const { sections } = this.state;
 
-        return (
-            <SectionList
-                style={styles.list}
-                renderSectionHeader={data => this.renderSectionHeader(data)}
-                renderItem={data => this.renderItem(data)}
-                sections={sections}/>
-        );
+        if (sections.length > 0) {
+            return (
+                <SectionList
+                    style={styles.list}
+                    renderSectionHeader={data => this.renderSectionHeader(data)}
+                    renderItem={data => this.renderItem(data)}
+                    sections={sections}/>
+            );
+        } else {
+            return (
+                <View style={styles.empty}>
+                    <Image style={styles.emptyImg} source={require('./assets/empty.png')}/>
+                </View>
+            );
+        } 
     }
 }
 
 const styles = StyleSheet.create({
+    empty: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    emptyImg: {
+        width: 100,
+        height: 100,
+    },
     list: {
         backgroundColor: '#FFFFFF'
     },
