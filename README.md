@@ -4,7 +4,7 @@
 
 ## 截图
 
-<img src="https://raw.githubusercontent.com/teshoudong/iPasswordApp/master/capture.png" alt="Capture" width="980" style="border:1px solid #979797;">
+<img src="https://raw.githubusercontent.com/teshoudong/iPasswordApp/master/capture.png" alt="Capture" width="200" style="border:1px solid #979797;">
 
 ## 功能特性
 
