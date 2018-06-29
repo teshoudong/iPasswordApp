@@ -36,13 +36,18 @@ export default class List extends React.Component {
                     sections: this.getPasswordMapList(data)
                 });
             }
+        }).catch(err => {
+            console.log(err.message);
         });
     }
 
     getPasswordMapList(passwordList) {
         passwordList = passwordList || [];
         let map = {};
-        passwordList.forEach(item => {
+        passwordList.map(item => {
+            item.key = item.id;
+            return item;
+        }).forEach(item => {
             const prefix = item.name.substr(0, 1).toUpperCase();
             map[prefix] = map[prefix] || [];
             map[prefix].push(item);

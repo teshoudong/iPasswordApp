@@ -19,17 +19,17 @@ export default class Detail extends React.Component {
                 <View style={styles.info}>
                     <View style={[styles.infoItem, styles.infoItemBorder]}>
                         <Text style={styles.infoName}>用户名</Text>
-                        <Text style={styles.infoVal}>{item.account}</Text>
+                        <Text style={styles.infoVal} selectable={true}>{item.account}</Text>
                     </View>
                     <View style={styles.infoItem}>
                         <Text style={styles.infoName}>密码</Text>
-                        <Text style={styles.infoVal}>{password}</Text>
+                        <Text style={styles.infoVal} selectable={true}>{password}</Text>
                     </View>
                 </View>
                 <View style={styles.info}>
                     <View style={styles.infoItem}>
                         <Text style={styles.infoName}>网站</Text>
-                        <Text style={styles.infoVal}>{item.website}</Text>
+                        <Text style={styles.infoVal} selectable={true}>{item.website}</Text>
                     </View>
                 </View>
             </ScrollView>

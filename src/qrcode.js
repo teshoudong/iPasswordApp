@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity, View, Image } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, Image, Alert } from 'react-native';
 import Camera from 'react-native-camera';
 import storage from './storage';
 import PubSub from 'pubsub-js';
@@ -33,10 +33,10 @@ class Qrcode extends React.Component {
                         PubSub.publish('updatePasswordList', passwordList);
                         this.props.navigation.navigate('List');
                     } else {
-                        alert('密码不一致');
+                        Alert.alert('提示', '密码不一致');
                     }
                 }).catch(() => {
-                    alert('出问题啦，请重新扫码！');
+                    Alert.alert('提示', '出问题啦，请重新扫码！');
                     this.url = '';
                 });
         }
