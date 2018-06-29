@@ -22,7 +22,7 @@ export default class List extends React.Component {
     subUpdatePasswordList() {
         PubSub.subscribe('updatePasswordList', (_, data) => {
             this.setState({
-                sections: data
+                sections: this.getPasswordMapList(data)
             });
         });
     }
@@ -33,9 +33,25 @@ export default class List extends React.Component {
         }).then(data => {
             if (data) {
                 this.setState({
-                    sections: data
+                    sections: this.getPasswordMapList(data)
                 });
             }
+        });
+    }
+
+    getPasswordMapList(passwordList) {
+        passwordList = passwordList || [];
+        let map = {};
+        passwordList.forEach(item => {
+            const prefix = item.name.substr(0, 1).toUpperCase();
+            map[prefix] = map[prefix] || [];
+            map[prefix].push(item);
+        });
+        return Object.keys(map).map(key => {
+            return {
+                key,
+                data: map[key]
+            };
         });
     }
 
