@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
     itemBorder: {
         borderStyle: 'solid',
         borderColor: '#D3D3D3',
-        borderBottomWidth: 1
+        borderTopWidth: 1
     },
     itemImg: {
         width: 50,
