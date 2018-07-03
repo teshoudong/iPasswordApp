@@ -12,7 +12,8 @@ const styles = StyleSheet.create({
         flex: 1
     },
     header: {
-        backgroundColor: '#333333'
+        backgroundColor: '#333333',
+        borderBottomWidth: 0
     },
     headerTitle: {
         color: '#FFFFFF'
@@ -70,7 +71,7 @@ export default class App extends React.Component {
     }
 
     handleAppStateChange(e) {
-        if (e !== 'active') {
+        if (e === 'background') {
             PubSub.publish('logout');
         }
     }
