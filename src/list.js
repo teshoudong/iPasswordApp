@@ -1,14 +1,38 @@
 import React from 'react';
-import { View, Text, Image, SectionList, TouchableHighlight, StyleSheet } from 'react-native';
+import { View, Text, Image, SectionList, TouchableHighlight, StyleSheet, TextInput } from 'react-native';
 import storage from './storage';
 import PubSub from 'pubsub-js';
+import fuzzy from 'fuzzy';
+
+class Search extends React.Component {
+    render() {
+        return (
+            <View style={styles.search}>
+                <Image style={styles.searchImg} source={require('./assets/search.png')}/>
+                <TextInput style={styles.searchInput} placeholder="搜索" {...this.props}/>
+            </View>
+        );
+    }
+}
+
+class Empty extends React.Component {
+    render() {
+        return (
+            <View style={styles.empty}>
+                <Text style={styles.emptyText}>暂无数据</Text>
+            </View>
+        );
+    }
+}
 
 export default class List extends React.Component {
     constructor(props) {
         super(props);
 
+        this.passwordList = [];
+
         this.state = {
-            sections: []
+            passwordList: []
         };
 
         this.getData();
@@ -21,8 +45,9 @@ export default class List extends React.Component {
 
     subUpdatePasswordList() {
         PubSub.subscribe('updatePasswordList', (_, data) => {
+            this.passwordList = data;
             this.setState({
-                sections: this.getPasswordMapList(data)
+                passwordList: data
             });
         });
     }
@@ -32,8 +57,9 @@ export default class List extends React.Component {
             key: 'passwordList'
         }).then(data => {
             if (data) {
+                this.passwordList = data;
                 this.setState({
-                    sections: this.getPasswordMapList(data)
+                    passwordList: data
                 });
             }
         }).catch(err => {
@@ -63,6 +89,18 @@ export default class List extends React.Component {
     handleClikItem(item) {
         this.props.navigation.navigate('Detail', {
             item
+        });
+    }
+
+    handeSearch(e) {
+        const value = e;
+        const passwordList = this.passwordList;
+        const result = fuzzy.filter(value, passwordList, {
+            extract: el => `${el.account} ${el.name} ${el.website}`
+        }).map(item => item.original);
+
+        this.setState({
+            passwordList: result.length > 0 ? result : this.passwordList
         });
     }
 
@@ -102,35 +140,49 @@ export default class List extends React.Component {
     }
 
     render() {
-        const { sections } = this.state;
+        const { passwordList } = this.state;
+        const sections = this.getPasswordMapList(passwordList);
 
-        if (sections.length > 0) {
-            return (
-                <SectionList
-                    style={styles.list}
-                    renderSectionHeader={data => this.renderSectionHeader(data)}
-                    renderItem={data => this.renderItem(data)}
-                    sections={sections}/>
-            );
-        } else {
-            return (
-                <View style={styles.empty}>
-                    <Image style={styles.emptyImg} source={require('./assets/empty.png')}/>
-                </View>
-            );
-        } 
+        return (
+            <SectionList
+                style={styles.list}
+                ListEmptyComponent={<Empty/>}
+                ListHeaderComponent={<Search onChangeText={e => this.handeSearch(e)}/>}
+                renderSectionHeader={data => this.renderSectionHeader(data)}
+                renderItem={data => this.renderItem(data)}
+                sections={sections}/>
+        );
     }
 }
 
 const styles = StyleSheet.create({
     empty: {
-        flex: 1,
         justifyContent: 'center',
         alignItems: 'center'
     },
-    emptyImg: {
-        width: 100,
-        height: 100,
+    emptyText: {
+        fontSize: 12,
+        color: '#D3D3D3'
+    },
+    search: {
+        height: 50,
+        padding: 10,
+        position: 'relative'
+    },
+    searchImg: {
+        width: 16,
+        height: 16,
+        position: 'absolute',
+        left: 17,
+        top: 17,
+        zIndex: 1
+    },
+    searchInput: {
+        backgroundColor: '#EDEDEF',
+        height: 30,
+        borderRadius: 4,
+        paddingLeft: 30,
+        fontSize: 12
     },
     list: {
         backgroundColor: '#FFFFFF'
