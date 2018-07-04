@@ -55,9 +55,10 @@ export default class Login extends React.Component {
                 <View style={styles.loginContainer}>
                     <Text style={styles.loginLogo}>iPassword</Text>
                     <TextInput 
-                        style={styles.loginText} 
+                        style={styles.loginInput} 
                         secureTextEntry={true} 
-                        placeholder="请输入密码" 
+                        placeholder="请输入密码"
+                        underlineColorAndroid="transparent"
                         onChangeText={text => this.handleInput(text)}/>
                     <TouchableOpacity 
                         style={styles.loginButton} 
@@ -85,12 +86,13 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginBottom: 30
     },
-    loginText: {
+    loginInput: {
         backgroundColor: '#FFFFFF',
         width: 240,
         height: 40,
         borderRadius: 4,
         textAlign: 'center',
+        padding: 0,
         fontSize: 12
     },
     loginButton: {

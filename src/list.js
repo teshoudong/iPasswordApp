@@ -9,7 +9,7 @@ class Search extends React.Component {
         return (
             <View style={styles.search}>
                 <Image style={styles.searchImg} source={require('./assets/search.png')}/>
-                <TextInput style={styles.searchInput} placeholder="搜索" {...this.props}/>
+                <TextInput style={styles.searchInput} underlineColorAndroid="transparent" placeholder="搜索" {...this.props}/>
             </View>
         );
     }
@@ -182,6 +182,9 @@ const styles = StyleSheet.create({
         height: 30,
         borderRadius: 4,
         paddingLeft: 30,
+        paddingRight: 0,
+        paddingTop: 0,
+        paddingBottom: 0,
         fontSize: 12
     },
     list: {
